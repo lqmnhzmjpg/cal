@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Order Manager | Precision Print</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #eef2f7 0%, #e0e7ed 100%);
+            min-height: 100vh;
+            padding: 28px 24px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 32px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Page 1 - Start */
+        .page1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 85vh;
+        }
+
+        .start-container {
+            text-align: center;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(10px);
+            padding: 48px 72px;
+            border-radius: 64px;
+            box-shadow: 0 30px 45px -20px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+
+        .btn-start {
+            background: #1e2f3e;
+            color: white;
+            border: none;
+            padding: 18px 58px;
+            font-size: 1.6rem;
+            font-weight: 550;
+            letter-spacing: 1px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.25s;
+            box-shadow: 0 12px 22px -10px rgba(0,0,0,0.2);
+            width: 100%;
+        }
+
+        .btn-start:hover {
+            background: #0f212e;
+            transform: scale(1.02);
+        }
+
+        /* Page 2 Layout */
+        .page2 {
+            max-width: 1500px;
+            margin: 0 auto;
+            animation: fadeSlideUp 0.35s ease-out;
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(12px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .form-panel {
+            background: white;
+            border-radius: 28px;
+            padding: 28px 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eef2f8;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px 28px;
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-field label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #4a5b6e;
+        }
+
+        .form-control-modern {
+            background: #f8fafd;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 12px 18px;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            outline: none;
+            width: 100%;
+        }
+
+        .form-control-modern:focus {
+            border-color: #2c7da0;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(44,125,160,0.15);
+        }
+
+        .radio-cluster {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            background: #f8fafd;
+            padding: 8px 16px;
+            border-radius: 48px;
+            border: 1px solid #e2edf2;
+        }
+
+        .radio-cluster label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #1e2f3e;
+            cursor: pointer;
+        }
+
+        .inline-number {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8fafd;
+            padding: 5px 16px;
+            border-radius: 40px;
+            border: 1px solid #e2edf2;
+        }
+
+        .inline-number input {
+            width: 90px;
+            background: white;
+            border: 1px solid #cfdfe8;
+            border-radius: 30px;
+            padding: 8px 12px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .manual-section {
+            background: #f9fbfe;
+            border-radius: 24px;
+            padding: 20px 24px;
+            margin-top: 20px;
+            border: 1px dashed #cbdde6;
+        }
+
+        .manual-row-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        .manual-group {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .btn-manual {
+            background: #2c7da0;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 32px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            height: 46px;
+        }
+
+        .btn-manual:hover {
+            background: #1f5e7a;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin: 28px 0 18px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+            background: #f1f4f9;
+            color: #1e2f3e;
+        }
+
+        .btn-primary {
+            background: #2c7da0;
+            color: white;
+            box-shadow: 0 2px 6px rgba(44,125,160,0.2);
+        }
+        .btn-primary:hover { background: #226180; transform: translateY(-1px);}
+
+        .btn-warning {
+            background: #e67e22;
+            color: white;
+        }
+        .btn-warning:hover { background: #d35400;}
+
+        .btn-danger {
+            background: #c44536;
+            color: white;
+        }
+        .btn-danger:hover { background: #a93426;}
+
+        .btn-neutral {
+            background: #4b6f86;
+            color: white;
+        }
+        .btn-neutral:hover { background: #3a566b;}
+
+        .summary-modern {
+            background: #eef3fc;
+            border-radius: 40px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1f3b4c;
+            border: 1px solid #d4e2ef;
+        }
+        .summary-modern span {
+            color: #2c7da0;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 8px;
+        }
+
+        .table-wrapper {
+            background: white;
+            border-radius: 28px;
+            overflow-x: auto;
+            box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eef2f8;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            min-width: 950px;
+        }
+
+        .data-table th {
+            background: #f2f6fa;
+            padding: 16px 12px;
+            text-align: left;
+            font-weight: 700;
+            color: #1f3b4c;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #edf2f7;
+            color: #1f2f3e;
+        }
+
+        .data-table tr:hover td {
+            background-color: #fafcff;
+        }
+
+        .grand-total-footer {
+            background: #e9f3e9;
+            font-weight: 800;
+            border-top: 2px solid #9ec0b4;
+        }
+
+        .modal-window {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: white;
+            width: 92%;
+            max-width: 1300px;
+            max-height: 90vh;
+            border-radius: 40px;
+            overflow-y: auto;
+            padding: 28px 32px;
+            position: relative;
+            box-shadow: 0 30px 40px rgba(0,0,0,0.2);
+        }
+
+        .close-modal {
+            position: sticky;
+            top: 0;
+            float: right;
+            font-size: 28px;
+            font-weight: 500;
+            cursor: pointer;
+            background: white;
+            padding: 0 8px;
+            border-radius: 50%;
+            line-height: 28px;
+        }
+
+        .close-modal:hover { color: #c44536;}
+
+        @media (max-width: 680px) {
+            body { padding: 16px; }
+            .form-panel { padding: 20px; }
+            .btn { padding: 10px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PAGE 1 : START -->
+    <div id="page1" class="page1">
+        <div class="start-container">
+            <button class="btn-start" onclick="initSystem()">→  OPEN WORKSPACE  ←</button>
+        </div>
+    </div>
+
+    <!-- PAGE 2 : MAIN SYSTEM -->
+    <div id="page2" class="page2" style="display: none;">
+        <div class="form-panel">
+            <div class="grid-2col">
+                <div class="input-field">
+                    <label>NAMA PELANGGAN</label>
+                    <input type="text" id="nama" class="form-control-modern" placeholder="Masukkan nama">
+                </div>
+                <div class="input-field">
+                    <label>TARIKH ORDER</label>
+                    <input type="date" id="tarikh" class="form-control-modern">
+                </div>
+            </div>
+
+            <div class="grid-2col">
+                <div class="input-field">
+                    <label>KATEGORI PRODUK</label>
+                    <div class="radio-cluster">
+                        <label><input type="radio" name="product" value="Banner" checked> Banner</label>
+                        <label><input type="radio" name="product" value="Bunting"> Bunting</label>
+                        <label><input type="radio" name="product" value="Sticker"> Sticker</label>
+                    </div>
+                </div>
+                <div class="input-field">
+                    <label>DETAIL / NOTA</label>
+                    <input type="text" id="details" class="form-control-modern" placeholder="Contoh: bahan, cetakan">
+                </div>
+            </div>
+
+            <div class="grid-2col">
+                <div class="input-field">
+                    <label>UKURAN (PANJANG x LEBAR) (kaki)</label>
+                    <div style="display: flex; gap: 12px;">
+                        <input type="number" id="panjang" class="form-control-modern" placeholder="Panjang" value="0" step="0.1">
+                        <input type="number" id="lebar" class="form-control-modern" placeholder="Lebar" value="0" step="0.1">
+                    </div>
+                </div>
+                <div class="input-field">
+                    <label>RATE (RM/kaki²)</label>
+                    <div class="radio-cluster">
+                        <label><input type="radio" name="harga" value="1.8"> 1.8</label>
+                        <label><input type="radio" name="harga" value="2.0"> 2.0</label>
+                        <label><input type="radio" name="harga" value="2.5"> 2.5</label>
+                        <label><input type="radio" name="harga" value="3.0"> 3.0</label>
+                        <label><input type="radio" name="harga" value="3.5"> 3.5</label>
+                        <label><input type="radio" name="harga" value="8.0"> 8.0</label>
+                        <label><input type="radio" name="harga" value="10.0"> 10.0</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2col">
+                <div class="input-field">
+                    <label>FINISHING (RM)</label>
+                    <div class="radio-cluster">
+                        <label><input type="radio" name="finishing" value="0" checked> 0</label>
+                        <label><input type="radio" name="finishing" value="5"> 5</label>
+                        <label><input type="radio" name="finishing" value="15"> 15</label>
+                    </div>
+                </div>
+                <div class="input-field">
+                    <label>XTRA LUBANG (RM 1 / lubang)</label>
+                    <div class="inline-number">
+                        <input type="number" id="xtraLubang" min="0" value="0" step="1">
+                        <span>lubang</span>
+                    </div>
+                </div>
+                <div class="input-field">
+                    <label>KUANTITI (PCS) *boleh ubah</label>
+                    <input type="number" id="pcs" class="form-control-modern" value="1" min="1" step="1" style="background:white; font-weight:500;">
+                </div>
+            </div>
+
+            <!-- Manual item area -->
+            <div class="manual-section">
+                <div style="font-weight: 600; margin-bottom: 12px; color:#2c5a74;">TAMBAH ITEM LUARAN (aksesori, bahan lain)</div>
+                <div class="manual-row-flex">
+                    <div class="manual-group">
+                        <label>Nama Item</label>
+                        <input type="text" id="manualItem" class="form-control-modern" placeholder="cth: Plastik laminasi">
+                    </div>
+                    <div class="manual-group">
+                        <label>Harga Unit (RM)</label>
+                        <input type="number" id="manualHarga" class="form-control-modern" value="0" step="0.01">
+                    </div>
+                    <div class="manual-group">
+                        <label>Kuantiti</label>
+                        <input type="number" id="manualKuantiti" class="form-control-modern" value="1" min="1">
+                    </div>
+                    <button class="btn-manual" onclick="addManualItem()">+ Tambah Item</button>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="addProduct()">Tambah Produk</button>
+                <button class="btn btn-warning" onclick="showTotalAlert()">Kira Keseluruhan</button>
+                <button class="btn btn-neutral" onclick="openPdfPreview()">Papar Laporan</button>
+                <button class="btn btn-danger" onclick="downloadPdfReport()">Muat Turun PDF (Menegak)</button>
+                <button class="btn" onclick="resetAllData()">Reset Data</button>
+            </div>
+
+            <div class="summary-modern">
+                JUMLAH ITEM : <span id="totalKuantiti">0</span> &nbsp;|&nbsp; JUMLAH HARGA : RM <span id="totalHarga">0.00</span>
+            </div>
+        </div>
+
+        <!-- TABLE SECTION -->
+        <div class="table-wrapper">
+            <div style="padding: 16px 20px 0 20px; font-weight: 600; font-size: 1rem; color:#2c5a74;" id="namaDisplay">Nama : -</div>
+            <table class="data-table" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>#</th><th>Tarikh</th><th>Item</th><th>Butiran</th><th>Saiz</th><th>Rate</th>
+                        <th>Lubang</th><th>Finishing</th><th>Kuantiti</th><th>Jumlah (RM)</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+                <tfoot id="tableFooter" class="grand-total-footer"></tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODAL PREVIEW -->
+    <div id="reportModal" class="modal-window">
+        <div class="modal-card">
+            <span class="close-modal" onclick="closeModal()">×</span>
+            <div style="margin-bottom: 18px;">
+                <div style="font-weight: 700; font-size: 1.3rem; letter-spacing: -0.2px;">RINGKASAN PESANAN</div>
+                <div id="modalCustomerInfo" style="margin-top: 12px; background:#f6f9fe; padding: 12px 16px; border-radius: 24px;"></div>
+            </div>
+            <div id="modalTableContent" style="overflow-x: auto;"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        // ---------- Data ----------
+        let ordersArray = [];     
+
+        function persistData() {
+            localStorage.setItem('order_system_pro', JSON.stringify(ordersArray));
+            const customerName = document.getElementById('nama').value;
+            if(customerName) localStorage.setItem('cust_name_pro', customerName);
+        }
+
+        function loadPersisted() {
+            const saved = localStorage.getItem('order_system_pro');
+            if(saved) ordersArray = JSON.parse(saved);
+            const savedName = localStorage.getItem('cust_name_pro');
+            if(savedName) document.getElementById('nama').value = savedName;
+            refreshDisplay();
+        }
+
+        // Compute product total (rate sudah termasuk RM8/RM10)
+        function computeProductTotal(panjang, lebar, rateVal, xtraLubang, finishingVal, qty) {
+            const areaTotal = panjang * lebar * parseFloat(rateVal);
+            const extraCost = parseInt(xtraLubang) * 1;
+            const finishCost = parseFloat(finishingVal);
+            const perPieceTotal = areaTotal + extraCost + finishCost;
+            return perPieceTotal * qty;
+        }
+
+        // Add product from main form (pcs boleh >1)
+        function addProduct() {
+            const tarikh = document.getElementById('tarikh').value;
+            if(!tarikh) { alert("Sila pilih tarikh"); return; }
+            const product = document.querySelector('input[name="product"]:checked').value;
+            const details = document.getElementById('details').value.trim() || "-";
+            let panjang = parseFloat(document.getElementById('panjang').value);
+            let lebar = parseFloat(document.getElementById('lebar').value);
+            if(isNaN(panjang) || isNaN(lebar) || panjang <= 0 || lebar <= 0) {
+                alert("Panjang dan lebar mesti lebih daripada 0");
+                return;
+            }
+            const rateSelected = document.querySelector('input[name="harga"]:checked');
+            if(!rateSelected) { alert("Sila pilih rate"); return; }
+            const rateVal = rateSelected.value;
+            const xtraLubang = parseInt(document.getElementById('xtraLubang').value) || 0;
+            const finishingVal = document.querySelector('input[name="finishing"]:checked').value;
+            let qty = parseInt(document.getElementById('pcs').value);
+            if(isNaN(qty) || qty < 1) qty = 1;
+            
+            const totalPrice = computeProductTotal(panjang, lebar, rateVal, xtraLubang, finishingVal, qty);
+            
+            const newOrder = {
+                tarikh: tarikh,
+                item: product,
+                details: details,
+                size: `${panjang} x ${lebar}`,
+                rate: parseFloat(rateVal),
+                lubang: xtraLubang,
+                finishing: parseFloat(finishingVal),
+                kuantiti: qty,
+                total: parseFloat(totalPrice.toFixed(2)),
+                isManual: false
+            };
+            ordersArray.push(newOrder);
+            persistData();
+            refreshDisplay();
+            
+            // reset field size, lubang, detail tapi biar pcs ke 1 default
+            document.getElementById('panjang').value = 0;
+            document.getElementById('lebar').value = 0;
+            document.getElementById('xtraLubang').value = 0;
+            document.getElementById('details').value = '';
+            document.getElementById('pcs').value = 1;
+        }
+
+        // Manual item addition
+        function addManualItem() {
+            const tarikh = document.getElementById('tarikh').value;
+            if(!tarikh) { alert("Sila pilih tarikh terlebih dahulu"); return; }
+            const itemName = document.getElementById('manualItem').value.trim();
+            const hargaUnit = parseFloat(document.getElementById('manualHarga').value);
+            const kuantitiManual = parseInt(document.getElementById('manualKuantiti').value);
+            if(!itemName) { alert("Nama item diperlukan"); return; }
+            if(isNaN(hargaUnit) || hargaUnit <= 0) { alert("Harga unit mesti lebih daripada 0"); return; }
+            if(kuantitiManual < 1) { alert("Kuantiti minimum 1"); return; }
+            
+            const totalManual = hargaUnit * kuantitiManual;
+            const manualOrder = {
+                tarikh: tarikh,
+                item: itemName,
+                details: "-",
+                size: "-",
+                rate: hargaUnit,
+                lubang: 0,
+                finishing: 0,
+                kuantiti: kuantitiManual,
+                total: parseFloat(totalManual.toFixed(2)),
+                isManual: true
+            };
+            ordersArray.push(manualOrder);
+            persistData();
+            refreshDisplay();
+            
+            document.getElementById('manualItem').value = '';
+            document.getElementById('manualHarga').value = 0;
+            document.getElementById('manualKuantiti').value = 1;
+        }
+
+        function refreshDisplay() {
+            const tbody = document.getElementById('tableBody');
+            const tfoot = document.getElementById('tableFooter');
+            tbody.innerHTML = '';
+            if(!ordersArray.length) {
+                tfoot.innerHTML = '';
+                updateSummaryUI();
+                return;
+            }
+            
+            ordersArray.forEach((order, idx) => {
+                const row = tbody.insertRow();
+                let rateShow = order.rate;
+                if(order.size !== "-") rateShow = order.rate.toFixed(1);
+                else rateShow = order.rate.toFixed(2);
+                
+                row.innerHTML = `
+                    <td>${idx+1}</td>
+                    <td>${order.tarikh}</td>
+                    <td style="font-weight:500;">${order.item}</td>
+                    <td>${order.details}</td>
+                    <td>${order.size}</td>
+                    <td>${rateShow}</td>
+                    <td>${order.lubang}</td>
+                    <td>${order.finishing}</td>
+                    <td>${order.kuantiti}</td>
+                    <td style="font-weight:600; color:#226180;">${order.total.toFixed(2)}</td>
+                `;
+            });
+            
+            const grandTotalVal = ordersArray.reduce((sum, o) => sum + o.total, 0);
+            const totalItems = ordersArray.reduce((sum, o) => sum + o.kuantiti, 0);
+            tfoot.innerHTML = `
+                <tr class="grand-total-footer">
+                    <td colspan="8" style="text-align: right; font-weight: 800;">JUMLAH KESELURUHAN</td>
+                    <td style="font-weight: 800;">${totalItems}</td>
+                    <td style="font-weight: 800; color:#2c7da0;">RM ${grandTotalVal.toFixed(2)}</td>
+                </tr>
+            `;
+            const namaCustomer = document.getElementById('nama').value;
+            document.getElementById('namaDisplay').innerText = namaCustomer ? `Nama : ${namaCustomer}` : "Nama : -";
+            updateSummaryUI();
+        }
+        
+        function updateSummaryUI() {
+            const totalQ = ordersArray.reduce((s,o) => s + o.kuantiti, 0);
+            const totalH = ordersArray.reduce((s,o) => s + o.total, 0);
+            document.getElementById('totalKuantiti').innerText = totalQ;
+            document.getElementById('totalHarga').innerText = totalH.toFixed(2);
+        }
+        
+        function showTotalAlert() {
+            const totalVal = ordersArray.reduce((s,o) => s + o.total, 0);
+            const totalItems = ordersArray.reduce((s,o) => s + o.kuantiti, 0);
+            alert(`RUMUSAN SEMASA\n────────────────\nJumlah Item (unit): ${totalItems}\nJumlah Nilai: RM ${totalVal.toFixed(2)}`);
+        }
+        
+        function groupByDate(orders) {
+            const groups = {};
+            orders.forEach(o => {
+                if(!groups[o.tarikh]) groups[o.tarikh] = [];
+                groups[o.tarikh].push(o);
+            });
+            return groups;
+        }
+        
+        // Preview Modal
+        function openPdfPreview() {
+            if(!ordersArray.length) { alert("Tiada data untuk dipaparkan"); return; }
+            const nama = document.getElementById('nama').value || "Tiada Nama";
+            const grouped = groupByDate(ordersArray);
+            const sortedDates = Object.keys(grouped).sort();
+            let modalHtml = `<table style="width:100%; border-collapse: collapse; font-size: 0.75rem; background:white;">
+                <thead><tr style="background:#eef2fa;"><th>#</th><th>Tarikh</th><th>Item</th><th>Butiran</th><th>Saiz</th><th>Rate</th><th>Lubang</th><th>Finishing</th><th>Kuantiti</th><th>Jumlah(RM)</th></tr></thead><tbody>`;
+            let itemCounter = 1;
+            let grandTotalPreview = 0;
+            sortedDates.forEach(date => {
+                const dateOrders = grouped[date];
+                const subTotal = dateOrders.reduce((s,o)=> s+o.total,0);
+                modalHtml += `<tr style="background:#e9f0f9;"><td colspan="10" style="font-weight:bold; padding:8px;">Tarikh: ${date}  |  Subtotal: RM ${subTotal.toFixed(2)}</td></tr>`;
+                dateOrders.forEach(order => {
+                    let rateShow = (order.size === "-") ? order.rate.toFixed(2) : order.rate.toFixed(1);
+                    modalHtml += `<tr>
+                        <td>${itemCounter++}</td><td>${order.tarikh}</td><td>${order.item}</td><td>${order.details}</td>
+                        <td>${order.size}</td><td>${rateShow}</td><td>${order.lubang}</td><td>${order.finishing}</td>
+                        <td>${order.kuantiti}</td><td>${order.total.toFixed(2)}</td>
+                    </tr>`;
+                    grandTotalPreview += order.total;
+                });
+            });
+            const totalUnits = ordersArray.reduce((s,o)=> s+o.kuantiti,0);
+            modalHtml += `<tr style="background:#cfe3e8; font-weight:800;"><td colspan="8" style="text-align:right;">GRAND TOTAL</td><td>${totalUnits}</td><td>RM ${grandTotalPreview.toFixed(2)}</td></tr>`;
+            modalHtml += `</tbody></table>`;
+            let summaryHtml = `<div style="margin-top:24px; background:#f5f9ff; border-radius:24px; padding:16px;"><strong>RINGKASAN</strong><br/>`;
+            sortedDates.forEach(date => {
+                const sub = grouped[date].reduce((s,o)=> s+o.total,0);
+                summaryHtml += `<div>${date} : RM ${sub.toFixed(2)} (${grouped[date].length} item)</div>`;
+            });
+            summaryHtml += `<hr/><div><strong>JUMLAH KESELURUHAN : RM ${grandTotalPreview.toFixed(2)}</strong></div></div>`;
+            document.getElementById('modalCustomerInfo').innerHTML = `<strong>Nama:</strong> ${nama}<br><strong>Bilangan Item:</strong> ${ordersArray.length}`;
+            document.getElementById('modalTableContent').innerHTML = modalHtml + summaryHtml;
+            document.getElementById('reportModal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+        
+        // PDF GENERATION - VERTICAL / PORTRAIT (A4 potrait)
+        function downloadPdfReport() {
+            if(ordersArray.length === 0) { alert("Tiada rekod untuk dicetak"); return; }
+            const nama = document.getElementById('nama').value || "Tiada Nama";
+            const { jsPDF } = window.jspdf;
+            // orientation portrait / vertical
+            const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text("LAPORAN PESANAN", 105, 18, { align: "center" });
+            doc.setFontSize(10);
+            doc.text(`Nama: ${nama}`, 14, 28);
+            doc.text(`Tarikh Cetak: ${new Date().toLocaleDateString()}`, 14, 34);
+            
+            const grouped = groupByDate(ordersArray);
+            const sortedDates = Object.keys(grouped).sort();
+            const tableBodyRows = [];
+            let rowNumber = 1;
+            sortedDates.forEach(date => {
+                const dateOrders = grouped[date];
+                const dateTotal = dateOrders.reduce((s,o)=> s+o.total,0);
+                tableBodyRows.push([{ content: `Tarikh: ${date}  |  Subtotal: RM ${dateTotal.toFixed(2)}`, colSpan: 10, styles: { fillColor: [227, 242, 253], fontStyle: 'bold' } }]);
+                dateOrders.forEach(order => {
+                    let rateDisplay = (order.size === "-") ? order.rate.toFixed(2) : order.rate.toFixed(1);
+                    tableBodyRows.push([
+                        rowNumber++, order.tarikh, order.item, order.details, order.size,
+                        rateDisplay, order.lubang, order.finishing, order.kuantiti,
+                        { content: order.total.toFixed(2), styles: { halign: 'right' } }
+                    ]);
+                });
+            });
+            const finalTotalVal = ordersArray.reduce((s,o)=> s+o.total,0);
+            const finalTotalQty = ordersArray.reduce((s,o)=> s+o.kuantiti,0);
+            tableBodyRows.push([
+                { content: "JUMLAH KESELURUHAN", colSpan: 8, styles: { fillColor: [200, 230, 201], fontStyle: 'bold', halign: 'right' } },
+                { content: finalTotalQty.toString(), styles: { fillColor: [200, 230, 201], fontStyle: 'bold' } },
+                { content: `RM ${finalTotalVal.toFixed(2)}`, styles: { fillColor: [200, 230, 201], fontStyle: 'bold', textColor: [40, 100, 70] } }
+            ]);
+            
+            doc.autoTable({
+                head: [['#', 'Tarikh', 'Item', 'Details', 'Saiz', 'Rate', 'Lubang', 'Finishing', 'Kuantiti', 'Jumlah (RM)']],
+                body: tableBodyRows,
+                startY: 42,
+                theme: 'grid',
+                styles: { fontSize: 7, cellPadding: 2, overflow: 'linebreak' },
+                headStyles: { fillColor: [44, 125, 160], textColor: 255, fontStyle: 'bold' },
+                columnStyles: {
+                    0: { cellWidth: 8 }, 1: { cellWidth: 22 }, 2: { cellWidth: 20 }, 3: { cellWidth: 24 },
+                    4: { cellWidth: 18 }, 5: { cellWidth: 12 }, 6: { cellWidth: 10 }, 7: { cellWidth: 12 },
+                    8: { cellWidth: 12 }, 9: { cellWidth: 20 }
+                },
+                margin: { left: 10, right: 10 }
+            });
+            let finalY = doc.lastAutoTable.finalY + 8;
+            doc.setFontSize(9);
+            doc.text("Ringkasan:", 14, finalY);
+            let yCursor = finalY + 5;
+            sortedDates.forEach(date => {
+                const sub = grouped[date].reduce((s,o)=> s+o.total,0);
+                doc.text(`${date} : RM ${sub.toFixed(2)} (${grouped[date].length} item)`, 14, yCursor);
+                yCursor += 5;
+                if(yCursor > 270) {
+                    doc.addPage();
+                    yCursor = 20;
+                    doc.text("Ringkasan (samb.):", 14, yCursor);
+                    yCursor += 5;
+                }
+            });
+            doc.save(`Pesanan_${nama.replace(/\s/g, '_')}.pdf`);
+        }
+        
+        function resetAllData() {
+            if(confirm("Padam semua data pesanan? Tindakan ini kekal.")) {
+                ordersArray = [];
+                localStorage.removeItem('order_system_pro');
+                localStorage.removeItem('cust_name_pro');
+                document.getElementById('nama').value = '';
+                document.getElementById('details').value = '';
+                document.getElementById('panjang').value = 0;
+                document.getElementById('lebar').value = 0;
+                document.getElementById('xtraLubang').value = 0;
+                document.getElementById('manualItem').value = '';
+                document.getElementById('manualHarga').value = 0;
+                document.getElementById('manualKuantiti').value = 1;
+                document.getElementById('pcs').value = 1;
+                const todayDate = new Date().toISOString().split('T')[0];
+                document.getElementById('tarikh').value = todayDate;
+                refreshDisplay();
+                closeModal();
+            }
+        }
+        
+        // System initializer (page2 reveal)
+        function initSystem() {
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'block';
+            const todayStr = new Date().toISOString().split('T')[0];
+            document.getElementById('tarikh').value = todayStr;
+            loadPersisted();
+            // set default radio selections
+            if(!document.querySelector('input[name="harga"]:checked')) {
+                document.querySelector('input[name="harga"][value="1.8"]').checked = true;
+            }
+        }
+        
+        window.onclick = function(e) {
+            const modal = document.getElementById('reportModal');
+            if(e.target === modal) modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
